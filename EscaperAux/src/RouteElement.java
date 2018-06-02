@@ -8,4 +8,8 @@ public class RouteElement {
 	public RouteElement() {
 		
 	}
+	
+	public int getID() {
+		return id_;
+	}
 }

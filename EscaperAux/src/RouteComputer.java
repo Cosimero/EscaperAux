@@ -7,8 +7,24 @@ public class RouteComputer {
 	}
 	
 	public Map computeRoute(int fromLocation) {
+		// Get the starting room
+		Room currentRoom = null;
+		for (Room room : map_.getRooms()) {
+			if (room.getID() == fromLocation) {
+				currentRoom = room;
+				break;
+			}
+		}
 		
-		return null;
+		assert currentRoom != null;
+		
+		// Empty map to fill and provide as output
+		Map resultMap = new Map();
+		
+		
+		
+		 
+		return resultMap;
 	}
 	
 }
