@@ -68,6 +68,7 @@ public class MapDrawer {
 		
 		
 		System.out.println("repaint");
+		frame.getContentPane().remove(0);
 		frame.getContentPane().add(graphComponent2);
 		frame.setVisible(true);
 //		frame.revalidate();
