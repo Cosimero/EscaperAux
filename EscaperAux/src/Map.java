@@ -15,6 +15,4 @@ public class Map {
 	public void setRooms_(List<Room> rooms_) {
 		this.rooms_ = rooms_;
 	}
-	
-	
 }
