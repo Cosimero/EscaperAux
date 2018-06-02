@@ -3,10 +3,13 @@ public class RouteElement implements Comparable<RouteElement> {
 	private int id_;
 	private int capacity_;
 	private int fullness_;
-	private boolean hasExit;
+	private boolean hasExit_;
 	
-	public RouteElement() {
-		
+	public RouteElement(int ID, int capacity, int fullness, boolean hasExit) {
+		id_ = ID;
+		capacity_ = capacity;
+		fullness_ = fullness;
+		hasExit_ = hasExit;
 	}
 	
 	public int getID() {
@@ -14,7 +17,7 @@ public class RouteElement implements Comparable<RouteElement> {
 	}
 	
 	public boolean hasExit() {
-		return hasExit;
+		return hasExit_;
 	}
 	
 	public boolean isFull() {

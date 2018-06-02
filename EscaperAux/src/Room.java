@@ -4,8 +4,10 @@ public class Room extends RouteElement{
 	private Coordinates coordinates_;
 	private Hashtable<Integer,Corridor> connectedBy_ = new Hashtable<>(); 
 	
-	public Room() {
-		
+	public Room(String name, Coordinates c, int ID, int capacity, int fullness, boolean hasExit) {
+		super(ID,capacity,fullness,hasExit);
+		name_ = name;
+		coordinates_ = c;
 	}
 	
 	public Hashtable<Integer,Corridor> getCorridors() {
