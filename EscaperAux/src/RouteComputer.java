@@ -1,3 +1,5 @@
+import java.util.Hashtable;
+import java.util.PriorityQueue;
 
 public class RouteComputer {
 	private Map map_;
@@ -6,25 +8,49 @@ public class RouteComputer {
 		map_ = map;
 	}
 	
-	public Map computeRoute(int fromLocation) {
-		// Get the starting room
-		Room currentRoom = null;
+	public EscapeRoute computeRoute(int fromLocation) {
+		RoomWrapper currentWrapRoom = null;
+		Hashtable<Integer,RoomWrapper> allWrapRooms = new Hashtable<>();
+		PriorityQueue<RoomWrapper> candidates = new PriorityQueue<>();
+		// Add all of the rooms to candidate queue
 		for (Room room : map_.getRooms()) {
-			if (room.getID() == fromLocation) {
-				currentRoom = room;
-				break;
+			if (room.getID() == fromLocation) {		// Get the starting room and add all rooms in the building in wrapper to hash set to preprocess them before the computation
+				currentWrapRoom = new RoomWrapper(room);
+				currentWrapRoom.setDistance(0);
+				candidates.add(currentWrapRoom);
+				currentWrapRoom.setVisited();
+				allWrapRooms.put(room.getID(),currentWrapRoom);
 			}
+			else allWrapRooms.put(room.getID(), new RoomWrapper(room));
+		}
+		//Wrongly assigned location
+		assert currentWrapRoom != null;
+
+		// Modified Dijkstra routine
+		Corridor exitingCorridor = null;
+		while(!currentWrapRoom.getRoom().hasExit()) { // If the room has exit end
+			for (Corridor corridor : currentWrapRoom.getRoom().getCorridors()) {
+				if(corridor.isFull()) continue; // This ensures, that we'll never take into consideration rooms that are connected only by full corridors
+				if(corridor.hasExit()) { exitingCorridor = corridor; break; } // We can escape via this corridor -> TODO better to add separate exits to those corridors
+				for (Room neighbour : corridor.getRooms()) {
+					RoomWrapper neighbourWrap = allWrapRooms.get(neighbour.getID());
+					if(neighbourWrap.wasVisited()) continue;
+					neighbourWrap.setVisited();
+					if(neighbour.isFull()) continue;
+					int distance = currentWrapRoom.getDistance() + corridor.getLength();
+					// If is possible to improve the distance, improve it, if is improved, change the best option to get there
+					if( distance < neighbourWrap.getDistance()) { neighbourWrap.setDistance(distance); neighbourWrap.setPrevious(corridor, currentWrapRoom);}				}
+			}
+			currentWrapRoom = candidates.poll();
+			currentWrapRoom.setVisited();
+			if(currentWrapRoom.getRoom().hasExit()) break;
+			if(candidates.size() == 0) {currentWrapRoom = null; break; }// We couldn't find a proper escape route. PANIC!!!
 		}
 		
-		assert currentRoom != null;
+		// ???????? TODO What if exitingCorridor = null && currentWrapRoom == null which means that no way out exists ???????
 		
-		// Empty map to fill and provide as output
-		Map resultMap = new Map();
-		
-		
-		
-		 
-		return resultMap;
+		// Construct escape route and return it
+		 return (exitingCorridor == null) ? new EscapeRoute(currentWrapRoom) : new EscapeRoute(currentWrapRoom,exitingCorridor);
 	}
 	
 }

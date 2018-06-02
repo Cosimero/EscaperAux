@@ -7,4 +7,12 @@ public class Corridor extends RouteElement{
 	public Corridor() {
 		
 	}
+	
+	public List<Room> getRooms() {
+		return leadingTo_;
+	}
+	
+	public int getLength() {
+		return length_;
+	}
 }

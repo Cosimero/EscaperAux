@@ -8,11 +8,15 @@ public class Map {
 		name_=name;
 	}
 
-	public List<Room> getRooms_() {
+	public List<Room> getRooms() {
 		return rooms_;
 	}
 
-	public void setRooms_(List<Room> rooms_) {
+	public void setRooms(List<Room> rooms_) {
 		this.rooms_ = rooms_;
+	}
+	
+	public String getName() {
+		return name_;
 	}
 }

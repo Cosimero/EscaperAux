@@ -14,7 +14,7 @@ public class Main {
 		
 		// Compute route
 		RouteComputer computer = new RouteComputer(map);
-		Map bestRoute = computer.computeRoute(location);
+		EscapeRoute bestRoute = computer.computeRoute(location);
 		
 		// Give the computed route back to the drawer
 		
