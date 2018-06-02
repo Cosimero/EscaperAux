@@ -23,6 +23,10 @@ public class RouteElement implements Comparable<RouteElement> {
 	public boolean isFull() {
 		return capacity_ <= fullness_;
 	}
+	
+	public void updateFullness(int state) {
+		fullness_ = state;
+	}
 
 	@Override
 	public int compareTo(RouteElement o) {

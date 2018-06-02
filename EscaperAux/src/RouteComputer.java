@@ -33,6 +33,9 @@ public class RouteComputer {
 		// Modified Dijkstra routine
 		Corridor exitingCorridor = null;
 		while(!currentWrapRoom.getRoom().hasExit()) { // If the room has exit end
+			if (candidates.size() == 0) {currentWrapRoom = null; break; }// We couldn't find a proper escape route. PANIC!!!
+			currentWrapRoom = candidates.poll();
+			currentWrapRoom.setVisited();
 			Iterator<Entry<Integer, Corridor>> corridorIterator = currentWrapRoom.getRoom().getCorridors().entrySet().iterator();
 			while (corridorIterator.hasNext()) {
 				Corridor corridor = corridorIterator.next().getValue();
@@ -43,16 +46,13 @@ public class RouteComputer {
 					Room neighbour = neighbourIterator.next().getValue();
 					RoomWrapper neighbourWrap = allWrapRooms.get(neighbour.getID());
 					if(neighbourWrap.wasVisited()) continue; // The node is closed
-					neighbourWrap.setVisited();
 					if(neighbour.isFull()) continue; // Also rooms that are full will not be part of the route
 					int distance = currentWrapRoom.getDistance() + corridor.getLength();
 					// If is possible to improve the distance, improve it, if is improved, change the best option to get there
-					if( distance < neighbourWrap.getDistance()) { neighbourWrap.setDistance(distance); neighbourWrap.setPrevious(corridor, currentWrapRoom);}				}
+					if( distance < neighbourWrap.getDistance()) { neighbourWrap.setDistance(distance); neighbourWrap.setPrevious(corridor, currentWrapRoom);}		
+					candidates.add(neighbourWrap);
+					}
 			}
-			currentWrapRoom = candidates.poll();
-			currentWrapRoom.setVisited();
-			if(currentWrapRoom.getRoom().hasExit()) break;
-			if(candidates.size() == 0) {currentWrapRoom = null; break; }// We couldn't find a proper escape route. PANIC!!!
 		}
 		
 		// ???????? TODO What if exitingCorridor = null && currentWrapRoom == null which means that no way out exists ???????

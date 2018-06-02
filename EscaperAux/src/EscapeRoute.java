@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class EscapeRoute {
-	List<RouteElement> route_ = new ArrayList<>();
+	private List<RouteElement> route_ = new ArrayList<>();
 	
 	public EscapeRoute(RoomWrapper exit) {
 		RoomWrapper current = exit;
@@ -10,6 +10,7 @@ public class EscapeRoute {
 			route_.add(current.getPreviousCorridor());
 			current = current.getPreviousRoom();
 		}
+		route_.add(current.getRoom());
 		Collections.reverse(route_);
 	}
 	
@@ -18,4 +19,9 @@ public class EscapeRoute {
 		this(last);
 		route_.add(exit); // Append one more corridor to the end
 	}
+	
+	public List<RouteElement> getRoute(){
+		return route_;
+	}
+	
 }
