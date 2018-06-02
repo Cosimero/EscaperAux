@@ -34,9 +34,9 @@ public class RouteComputer {
 				if(corridor.hasExit()) { exitingCorridor = corridor; break; } // We can escape via this corridor -> TODO better to add separate exits to those corridors
 				for (Room neighbour : corridor.getRooms()) {
 					RoomWrapper neighbourWrap = allWrapRooms.get(neighbour.getID());
-					if(neighbourWrap.wasVisited()) continue;
+					if(neighbourWrap.wasVisited()) continue; // The node is closed
 					neighbourWrap.setVisited();
-					if(neighbour.isFull()) continue;
+					if(neighbour.isFull()) continue; // Also rooms that are full will not be part of the route
 					int distance = currentWrapRoom.getDistance() + corridor.getLength();
 					// If is possible to improve the distance, improve it, if is improved, change the best option to get there
 					if( distance < neighbourWrap.getDistance()) { neighbourWrap.setDistance(distance); neighbourWrap.setPrevious(corridor, currentWrapRoom);}				}
