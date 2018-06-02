@@ -2,13 +2,13 @@ import java.util.*;
 public class Room extends RouteElement{
 	private String name_;
 	private Coordinates coordinates_;
-	private List<Corridor> connectedBy_ = new ArrayList<>(); 
+	private Hashtable<Integer,Corridor> connectedBy_ = new Hashtable<>(); 
 	
 	public Room() {
 		
 	}
 	
-	public List<Corridor> getCorridors() {
+	public Hashtable<Integer,Corridor> getCorridors() {
 		return connectedBy_;
 	}
 	
