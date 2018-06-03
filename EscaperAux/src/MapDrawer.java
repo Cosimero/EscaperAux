@@ -48,13 +48,11 @@ public class MapDrawer {
 						room.getCoordinates().getX(), room.getCoordinates().getY(), 20, 20);
 				
 				rooms.put(room.getID(), o);
-					
-				
 			}
 			
-//			Object v1 = graph.insertVertex(parent, null, "Room1", 20, 20, 80, 60);
-//			Object v2 = graph.insertVertex(parent, null, "Room2", 200, 150, 80, 60);
-//			Object v3 = graph.insertVertex(parent, null, "Room3", 200, 20, 80, 30);
+			//CreateEdges
+			
+
 //			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
 //			Object e2 = graph.insertEdge(parent, null, "", v1, v2);
 //			Object e3 = graph.insertEdge(parent, null, "", v1, v1);
@@ -87,29 +85,27 @@ public class MapDrawer {
 		
 		
 		//-----test map------
-		Map map = new Map("Test");
+		Map testMap = new Map("Test");
 
-		Coordinates cord = new Coordinates(10, 10);
 		
-		for(int i = 0; i < 5; i++) {
-			if(i > 2) map.addRoom(new Room(i+"",cord,i,10,0,true));
-			else map.addRoom(new Room(i+"",cord,i,10,0,false));
-		}
+		testMap.addRoom(new Room("Room1", new Coordinates(10, 10), 1, 10, 0, true));
+		testMap.addRoom(new Room("Room2", new Coordinates(30, 30), 2, 10, 0, true));
+		testMap.addRoom(new Room("Room3", new Coordinates(50, 50), 3, 10, 0, true));
+		
 		Corridor c1 = new Corridor(1, 5, 10, 0, false);
-		Corridor c2 = new Corridor(5, 6, 10, 0, false);
-		Corridor c6 = new Corridor(9, 10, 10, 0, false);
+		Corridor c2 = new Corridor(1, 6, 10, 0, false);
+
 		
-		// Create graph
-		map.linkRoomsByCorridor(map.getRooms().get(0), map.getRooms().get(1), c1);
-		map.linkRoomsByCorridor(map.getRooms().get(0), map.getRooms().get(2), c2);
-		map.linkRoomsByCorridor(map.getRooms().get(1), map.getRooms().get(3), c6);
+		testMap.linkRoomsByCorridor(testMap.getRooms().get(0), testMap.getRooms().get(1), c1);
+		testMap.linkRoomsByCorridor(testMap.getRooms().get(1), testMap.getRooms().get(2), c2);
+		
 		//-----test map------
 		
 		
 		
 		//Call to drawMap()
 		
-		MapDrawer drawer = new MapDrawer(map);
+		MapDrawer drawer = new MapDrawer(testMap);
 		drawer.drawMap();
 		
 		
