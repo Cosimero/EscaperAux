@@ -8,13 +8,13 @@ public class Main {
 		parser.updateFullnesses(map);
 		
 		// Draw it out
-		MapDrawer drawer = new MapDrawer();
-		drawer.drawMap(map);
-		int location = drawer.getIDOfUsersLocation();
+		MapDrawer drawer = new MapDrawer(map);
+		drawer.drawMap();
+		//int location = drawer.getIDOfUsersLocation();
 		
 		// Compute route
 		RouteComputer computer = new RouteComputer(map);
-		EscapeRoute bestRoute = computer.computeRoute(location);
+		//EscapeRoute bestRoute = computer.computeRoute(location);
 		
 		// Give the computed route back to the drawer
 		
