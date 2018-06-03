@@ -17,7 +17,7 @@ public class MapDrawer {
 	
 	public MapDrawer(Map m){
 		map = m; 
-		frame = new JFrame();
+	    frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(400, 400);
 		
@@ -96,8 +96,8 @@ public class MapDrawer {
 		Corridor c2 = new Corridor(1, 6, 10, 0, false);
 
 		
-		testMap.linkRoomsByCorridor(testMap.getRooms().get(0), testMap.getRooms().get(1), c1);
-		testMap.linkRoomsByCorridor(testMap.getRooms().get(1), testMap.getRooms().get(2), c2);
+		testMap.linkRoomsByCorridor(testMap.getRooms().get(1), testMap.getRooms().get(2), c1);
+		testMap.linkRoomsByCorridor(testMap.getRooms().get(2), testMap.getRooms().get(3), c2);
 		
 		//-----test map------
 		
