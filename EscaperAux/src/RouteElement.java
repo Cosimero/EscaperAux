@@ -11,7 +11,14 @@ public class RouteElement implements Comparable<RouteElement> {
 		fullness_ = fullness;
 		hasExit_ = hasExit;
 	}
-	
+	// Creating full/not-usable for escape corridor
+	public RouteElement(int ID, int capacity, boolean hasExit) {
+		id_ = ID;
+		// When capacity_ == fullness_ -> the element cannot be accessed by the user cause it's full has to be avoided
+		capacity_ = capacity;
+		fullness_ = capacity;
+		hasExit_ = hasExit;
+	}
 	public int getID() {
 		return id_;
 	}

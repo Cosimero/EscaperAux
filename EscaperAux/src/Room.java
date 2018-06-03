@@ -10,6 +10,13 @@ public class Room extends RouteElement{
 		coordinates_ = c;
 	}
 	
+	// Creating full/not-usable for escape room
+	public Room(String name, Coordinates c, int ID, int capacity, boolean hasExit) {
+		super(ID,capacity,hasExit);
+		name_ = name;
+		coordinates_ = c;
+	}
+	
 	public Hashtable<Integer,Corridor> getCorridors() {
 		return connectedBy_;
 	}
