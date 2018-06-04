@@ -98,14 +98,14 @@ public class MapDrawer {
 				//Get id
 				if (cell != null)
 				{
+					try {
 					RouteComputer computer = new RouteComputer(map);
 					int id = getIDFromLabel(graph.getLabel(cell));
 					EscapeRoute escapeRoute = computer.computeRoute(id);
 					drawRoute(escapeRoute);
 					
 					System.out.println(escapeRoute.getRoute());
-					
-					
+					} catch(Exception ex) {}
 				}
 			}
 		});
@@ -133,9 +133,9 @@ public class MapDrawer {
 				currentRoom = route.getRoute().get(i);
 				Object currentRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
 							currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
-				
 				// Link two following room by an edge
 				graph.insertEdge(parent, null, " ", previousRoomNode, currentRoomNode);
+				previousRoomNode = currentRoomNode;
 			}
 
 			
