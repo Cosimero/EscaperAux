@@ -11,19 +11,9 @@ public class Main {
 		Parser parser = new Parser(file);
 		Map map = parser.getMap();
 		parser.updateFullnesses(map);
-		
-		// Draw it out
+		// Draw it out and wait for users' selection then provide computed route
 		MapDrawer drawer = new MapDrawer(map);
 		drawer.drawMap();
-		//int location = drawer.getIDOfUsersLocation();
-		
-		// Compute route
-		RouteComputer computer = new RouteComputer(map);
-		//EscapeRoute bestRoute = computer.computeRoute(location);
-		
-		// Give the computed route back to the drawer
-		
-		// Show user the computed route
 		
 		
 
