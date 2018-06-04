@@ -37,7 +37,7 @@ public class MapDrawer {
 	
 	public void updateMap(Map m) {
 		map = m;
-		frame.getContentPane().remove(0);
+		frame.getContentPane().remove(1);
 		drawMap();
 	}
 	
@@ -117,9 +117,10 @@ public class MapDrawer {
 			}
 		});
 		
+		
+		frame.getContentPane().add(graphComponent);
 		frame.revalidate();
 		frame.repaint();
-		frame.getContentPane().add(graphComponent);
 		frame.setVisible(true);
 		
 		
@@ -132,21 +133,33 @@ public class MapDrawer {
 		
 		graph.getModel().beginUpdate(); //This is necessary for adding things to the graph
 		try {
-			Object previousRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
-						currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
+//			Object previousRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
+//						currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
+//			
+//			for(int i = 1; i < route.getRoute().size(); i++) {
+//				currentRoom = route.getRoute().get(i);
+//				Object currentRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
+//							currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
+//				
+//				// Link two following room by an edge
+//				graph.insertEdge(parent, null, " ", previousRoomNode, currentRoomNode);
+//			}
 			
-			for(int i = 1; i < route.getRoute().size(); i++) {
-				currentRoom = route.getRoute().get(i);
-				Object currentRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
-							currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
-				
-				// Link two following room by an edge
-				graph.insertEdge(parent, null, " ", previousRoomNode, currentRoomNode);
-			}
+			
+			graph.insertVertex(parent, null, currentRoom.getName(), currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
+			
 		} finally {
 			graph.getModel().endUpdate();
 		}
 		
+		mxGraphComponent graphComponent = new mxGraphComponent(graph);
+		graphComponent.getViewport().setOpaque(true);
+		graphComponent.setBackgroundImage(new ImageIcon("resources/plan.png"));
+		
+		frame.getContentPane().remove(0);
+		frame.getContentPane().add(graphComponent);
+		frame.revalidate();
+		frame.repaint();
 	}
 	private int getIDFromLabel(String labelText) {
 		String[] parsed = labelText.split(";");
