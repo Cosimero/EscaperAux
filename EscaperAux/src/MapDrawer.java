@@ -115,6 +115,11 @@ public class MapDrawer {
 		
 	}
 	
+	private int getIDFromLabel(String labelText) {
+		String[] parsed = labelText.split(";");
+		return Integer.parseInt(parsed[1]);
+	}
+	
 
 //	
 //	int getIDOfUsersLocation() {
