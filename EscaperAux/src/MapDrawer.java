@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
@@ -21,7 +22,8 @@ public class MapDrawer {
 		map = m; 
 	    frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000, 700);
+		frame.setSize(600, 1000);
+		frame.setPreferredSize(new Dimension(600, 1000));
 		
 	}
 	
@@ -30,7 +32,8 @@ public class MapDrawer {
 		drawMap();
 	}
 	
-	void drawMap() {	
+	
+	public void drawMap() {	
 		mxGraph graph = new mxGraph();
 		Object parent = graph.getDefaultParent();
 		
@@ -94,9 +97,11 @@ public class MapDrawer {
 				if (cell != null)
 				{
 					RouteComputer computer = new RouteComputer(map);
+					int id = getIDFromLabel(graph.getLabel(cell));
+					EscapeRoute escapeRoute = computer.computeRoute(id);
+//					updateMap()
 					
-//					computer.computeRoute();
-					System.out.println("cell="+graph.getLabel(cell));
+					System.out.println(escapeRoute.getRoute());
 					
 					
 				}
@@ -106,6 +111,7 @@ public class MapDrawer {
 		
 		frame.getContentPane().add(graphComponent);
 		frame.setVisible(true);
+		
 		
 	}
 	
