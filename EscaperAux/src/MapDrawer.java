@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
@@ -21,7 +22,8 @@ public class MapDrawer {
 		map = m; 
 	    frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000, 700);
+		frame.setSize(600, 1000);
+		frame.setPreferredSize(new Dimension(600, 1000));
 		
 	}
 	
@@ -30,7 +32,8 @@ public class MapDrawer {
 		drawMap();
 	}
 	
-	void drawMap() {	
+	
+	public void drawMap() {	
 		mxGraph graph = new mxGraph();
 		Object parent = graph.getDefaultParent();
 		
@@ -69,20 +72,11 @@ public class MapDrawer {
 						if (room.getID() != neighbour.getID()) {
 							
 							graph.insertEdge(parent, null, " ", rooms.get(room.getID()), rooms.get(neighbour.getID()));
-						}
-						
-					}
-					
-					
-				}
-				
-				
+						}		
+					}		
+				}	
 			}
 			
-
-//			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
-//			Object e2 = graph.insertEdge(parent, null, "", v1, v2);
-//			Object e3 = graph.insertEdge(parent, null, "", v1, v1);
 		} finally {
 			graph.getModel().endUpdate();
 		}
@@ -95,7 +89,6 @@ public class MapDrawer {
 		//Mouse listener
 		graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
 		{
-		
 			public void mouseReleased(MouseEvent e)
 			{
 				Object cell = graphComponent.getCellAt(e.getX(), e.getY());
@@ -103,7 +96,13 @@ public class MapDrawer {
 				//Get id
 				if (cell != null)
 				{
-					System.out.println("cell="+graph.getLabel(cell));
+					RouteComputer computer = new RouteComputer(map);
+					int id = getIDFromLabel(graph.getLabel(cell));
+					EscapeRoute escapeRoute = computer.computeRoute(id);
+//					updateMap()
+					
+					System.out.println(escapeRoute.getRoute());
+					
 					
 				}
 			}
@@ -112,6 +111,7 @@ public class MapDrawer {
 		
 		frame.getContentPane().add(graphComponent);
 		frame.setVisible(true);
+		
 		
 	}
 	
@@ -138,8 +138,8 @@ public class MapDrawer {
 		Map testMap = new Map("Test");
 
 		
-		testMap.addRoom(new Room("Room1", new Coordinates(10, 10), 1, 10, 0, true));
-		testMap.addRoom(new Room("Room2", new Coordinates(100, 30), 2, 10, 0, true));
+		testMap.addRoom(new Room("Room1", new Coordinates(10, 10), 1, 10, 0, false));
+		testMap.addRoom(new Room("Room2", new Coordinates(100, 30), 2, 10, 0, false));
 		testMap.addRoom(new Room("Room3", new Coordinates(50, 50), 3, 10, 0, true));
 		
 		Corridor c1 = new Corridor(1, 5, 10, 0, false);
