@@ -15,7 +15,7 @@ public class MapDrawer {
 	
 	private JFrame frame;
 	private Map map;
-	
+	private mxGraph graph = null;
 	
 	
 	public MapDrawer(Map m){
@@ -34,7 +34,7 @@ public class MapDrawer {
 	
 	
 	public void drawMap() {	
-		mxGraph graph = new mxGraph();
+		graph = new mxGraph();
 		Object parent = graph.getDefaultParent();
 		
 		Iterator<Entry<Integer, Room>> roomIterator = map.getRooms().entrySet().iterator();
@@ -99,7 +99,7 @@ public class MapDrawer {
 					RouteComputer computer = new RouteComputer(map);
 					int id = getIDFromLabel(graph.getLabel(cell));
 					EscapeRoute escapeRoute = computer.computeRoute(id);
-//					updateMap()
+					drawRoute(escapeRoute);
 					
 					System.out.println(escapeRoute.getRoute());
 					
@@ -114,7 +114,24 @@ public class MapDrawer {
 		
 		
 	}
-	
+	private void drawRoute(EscapeRoute route) {
+		// TODO replace graph showing map with one showing only the route
+		graph = new mxGraph();
+		Object parent = graph.getDefaultParent();
+		Room currentRoom = route.getRoute().get(0);
+		Object previousRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
+					currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
+		
+		for(int i = 1; i < route.getRoute().size(); i++) {
+			currentRoom = route.getRoute().get(i);
+			Object currentRoomNode = graph.insertVertex(parent, null, currentRoom.getName()+";"+currentRoom.getID(), 
+						currentRoom.getCoordinates().getX(), currentRoom.getCoordinates().getY(), 20, 20);
+			
+			// Link two following room by an edge
+			graph.insertEdge(parent, null, " ", previousRoomNode, currentRoomNode);
+		}
+		
+	}
 	private int getIDFromLabel(String labelText) {
 		String[] parsed = labelText.split(";");
 		return Integer.parseInt(parsed[1]);
