@@ -86,7 +86,6 @@ public class MapDrawer {
 		//Mouse listener
 		graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
 		{
-		
 			public void mouseReleased(MouseEvent e)
 			{
 				Object cell = graphComponent.getCellAt(e.getX(), e.getY());
@@ -94,7 +93,11 @@ public class MapDrawer {
 				//Get id
 				if (cell != null)
 				{
+					RouteComputer computer = new RouteComputer(map);
+					
+//					computer.computeRoute();
 					System.out.println("cell="+graph.getLabel(cell));
+					
 					
 				}
 			}
@@ -124,8 +127,8 @@ public class MapDrawer {
 		Map testMap = new Map("Test");
 
 		
-		testMap.addRoom(new Room("Room1", new Coordinates(10, 10), 1, 10, 0, true));
-		testMap.addRoom(new Room("Room2", new Coordinates(100, 30), 2, 10, 0, true));
+		testMap.addRoom(new Room("Room1", new Coordinates(10, 10), 1, 10, 0, false));
+		testMap.addRoom(new Room("Room2", new Coordinates(100, 30), 2, 10, 0, false));
 		testMap.addRoom(new Room("Room3", new Coordinates(50, 50), 3, 10, 0, true));
 		
 		Corridor c1 = new Corridor(1, 5, 10, 0, false);
