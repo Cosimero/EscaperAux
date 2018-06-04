@@ -1,3 +1,5 @@
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -19,7 +21,7 @@ public class MapDrawer {
 		map = m; 
 	    frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(400, 400);
+		frame.setSize(1000, 700);
 		
 	}
 	
@@ -33,7 +35,7 @@ public class MapDrawer {
 		Object parent = graph.getDefaultParent();
 		
 		Iterator<Entry<Integer, Room>> roomIterator = map.getRooms().entrySet().iterator();
-		
+		Iterator<Entry<Integer, Room>> roomIterator2 = map.getRooms().entrySet().iterator();
 		
 		graph.getModel().beginUpdate();
 		try {
@@ -44,13 +46,38 @@ public class MapDrawer {
 			while (roomIterator.hasNext()) {
 				Room room = roomIterator.next().getValue();
 				
-				Object o = graph.insertVertex(parent, null, room.getName(), 
+				Object o = graph.insertVertex(parent, null, room.getName()+";"+room.getID(), 
 						room.getCoordinates().getX(), room.getCoordinates().getY(), 20, 20);
 				
 				rooms.put(room.getID(), o);
 			}
 			
+			
 			//CreateEdges
+			
+			while (roomIterator2.hasNext()) {
+				Room room = roomIterator2.next().getValue();
+				Iterator<Entry<Integer, Corridor>> corridorIterator = room.getCorridors().entrySet().iterator();
+				
+				while (corridorIterator.hasNext()) {
+					Corridor corridor = corridorIterator.next().getValue();
+					Iterator<Entry<Integer, Room>> neighbourIterator = corridor.getRooms().entrySet().iterator();
+					
+					while (neighbourIterator.hasNext()) {
+						Room neighbour = neighbourIterator.next().getValue();
+						
+						if (room.getID() != neighbour.getID()) {
+							
+							graph.insertEdge(parent, null, " ", rooms.get(room.getID()), rooms.get(neighbour.getID()));
+						}
+						
+					}
+					
+					
+				}
+				
+				
+			}
 			
 
 //			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
@@ -64,6 +91,24 @@ public class MapDrawer {
 		mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		graphComponent.getViewport().setOpaque(true);
 		graphComponent.setBackgroundImage(new ImageIcon("resources/plan.png"));
+		
+		//Mouse listener
+		graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
+		{
+		
+			public void mouseReleased(MouseEvent e)
+			{
+				Object cell = graphComponent.getCellAt(e.getX(), e.getY());
+				
+				//Get id
+				if (cell != null)
+				{
+					System.out.println("cell="+graph.getLabel(cell));
+					
+				}
+			}
+		});
+		
 		
 		frame.getContentPane().add(graphComponent);
 		frame.setVisible(true);
@@ -89,7 +134,7 @@ public class MapDrawer {
 
 		
 		testMap.addRoom(new Room("Room1", new Coordinates(10, 10), 1, 10, 0, true));
-		testMap.addRoom(new Room("Room2", new Coordinates(30, 30), 2, 10, 0, true));
+		testMap.addRoom(new Room("Room2", new Coordinates(100, 30), 2, 10, 0, true));
 		testMap.addRoom(new Room("Room3", new Coordinates(50, 50), 3, 10, 0, true));
 		
 		Corridor c1 = new Corridor(1, 5, 10, 0, false);
@@ -98,6 +143,7 @@ public class MapDrawer {
 		
 		testMap.linkRoomsByCorridor(testMap.getRooms().get(1), testMap.getRooms().get(2), c1);
 		testMap.linkRoomsByCorridor(testMap.getRooms().get(2), testMap.getRooms().get(3), c2);
+		testMap.linkRoomsByCorridor(testMap.getRooms().get(1), testMap.getRooms().get(3), c2);
 		
 		//-----test map------
 		
@@ -108,25 +154,14 @@ public class MapDrawer {
 		MapDrawer drawer = new MapDrawer(testMap);
 		drawer.drawMap();
 		
-		
-		
-		
-		
-		
-	
-		
-		
+
 //		System.out.println("repaint");
 //		frame.getContentPane().remove(0);
 //		frame.getContentPane().add(graphComponent2);
 //		frame.setVisible(true);
 //		frame.revalidate();
 //		frame.repaint();
-		
-		
-		
-		
-		
+	
 	}
 	
 	//---------TESTING----------
