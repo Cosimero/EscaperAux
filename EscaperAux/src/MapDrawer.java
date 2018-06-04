@@ -69,20 +69,11 @@ public class MapDrawer {
 						if (room.getID() != neighbour.getID()) {
 							
 							graph.insertEdge(parent, null, " ", rooms.get(room.getID()), rooms.get(neighbour.getID()));
-						}
-						
-					}
-					
-					
-				}
-				
-				
+						}		
+					}		
+				}	
 			}
 			
-
-//			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
-//			Object e2 = graph.insertEdge(parent, null, "", v1, v2);
-//			Object e3 = graph.insertEdge(parent, null, "", v1, v1);
 		} finally {
 			graph.getModel().endUpdate();
 		}
