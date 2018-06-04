@@ -9,6 +9,12 @@ public class Corridor extends RouteElement{
 		length_ = length;
 	}
 	
+	// Creating full/not-usable for escape corridor
+	public Corridor(int length, int ID, int capacity, boolean hasExit) {
+		super(ID,capacity,hasExit);
+		length_ = length;
+	}
+	
 	public Hashtable<Integer,Room> getRooms() {
 		return leadingTo_;
 	}
