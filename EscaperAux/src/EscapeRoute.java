@@ -1,13 +1,14 @@
 import java.util.*;
 
+// Sequence of rooms representing an exit path
 public class EscapeRoute {
-	private List<RouteElement> route_ = new ArrayList<>();
+	private List<Room> route_ = new ArrayList<>();
+	private Corridor corridorExit_ = null;
 	
 	public EscapeRoute(RoomWrapper exit) {
 		RoomWrapper current = exit;
 		while(current.getPreviousRoom() != null) {
 			route_.add(current.getRoom());
-			route_.add(current.getPreviousCorridor());
 			current = current.getPreviousRoom();
 		}
 		route_.add(current.getRoom());
@@ -17,10 +18,10 @@ public class EscapeRoute {
 	// When exiting through corridor
 	public EscapeRoute(RoomWrapper last, Corridor exit) {
 		this(last);
-		route_.add(exit); // Append one more corridor to the end
+		corridorExit_ = exit; // One more corridor to the end
 	}
 	
-	public List<RouteElement> getRoute(){
+	public List<Room> getRoute(){
 		return route_;
 	}
 	
