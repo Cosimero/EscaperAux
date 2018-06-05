@@ -26,8 +26,8 @@ public class Parser {
     private void updateFullnesses(Map map) {
 		// Structure of file with situation (C || R);id;fullness
     		String line;
-    		while(mapScanner_.hasNextLine()) {
-    			line = mapScanner_.nextLine();
+    		while(situationScanner_.hasNextLine()) {
+    			line = situationScanner_.nextLine();
 			String[] parsed = line.split(";");
 			RouteElement element = null;
 			int id = Integer.parseInt(parsed[1]);
