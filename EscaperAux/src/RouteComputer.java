@@ -23,6 +23,11 @@ public class RouteComputer {
 			if (candidates.size() == 0) {currentWrapRoom = null; break; }// We can't find a proper escape route. PANIC!!!
 			currentWrapRoom = candidates.poll(); // Get the best candidate
 			currentWrapRoom.setVisited(); // Mark as visited
+			
+			// Update fullnesses of the route elements that are used on the path
+			currentWrapRoom.getRoom().increaseFullness(); 
+			if (currentWrapRoom.getPreviousCorridor() != null) currentWrapRoom.getPreviousCorridor().increaseFullness();
+			
 			Iterator<Entry<Integer, Corridor>> corridorIterator = currentWrapRoom.getRoom().getCorridors().entrySet().iterator();
 			while (corridorIterator.hasNext()) { 
 				Corridor corridor = corridorIterator.next().getValue();
@@ -41,9 +46,7 @@ public class RouteComputer {
 					}
 			}
 		}
-		
-		// ???????? TODO What if exitingCorridor = null && currentWrapRoom == null which means that no way out exists TODO ???????
-		
+		// TODO What if exitingCorridor = null && currentWrapRoom == null which means that no way out exists 
 		// Construct escape route and return it
 		 return (exitingCorridor == null) ? new EscapeRoute(currentWrapRoom) : new EscapeRoute(currentWrapRoom,exitingCorridor);
 	}

@@ -31,9 +31,7 @@ class RouteComputerTest {
 		// Expected ID sequence of elements 0->5->1->10->3
 		List<RouteElement> expected = new ArrayList<>();
 		expected.add(map.getRooms().get(0));
-		expected.add(c1);
 		expected.add(map.getRooms().get(1));
-		expected.add(c6);
 		expected.add(map.getRooms().get(3));
 		
 		Assert.assertArrayEquals(expected.toArray(), route.getRoute().toArray());
@@ -69,11 +67,8 @@ class RouteComputerTest {
 		// Expected ID sequence 0->5->1->7->2->8->3
 		List<RouteElement> expected = new ArrayList<>();
 		expected.add(map.getRooms().get(0));
-		expected.add(c1);
 		expected.add(map.getRooms().get(1));
-		expected.add(c3);
 		expected.add(map.getRooms().get(2));
-		expected.add(c4);
 		expected.add(map.getRooms().get(3));
 				
 		Assert.assertArrayEquals(expected.toArray(), route.getRoute().toArray());
@@ -110,9 +105,7 @@ class RouteComputerTest {
 		// Expected ID sequence 0->6->2->8->3
 		List<RouteElement> expected = new ArrayList<>();
 		expected.add(map.getRooms().get(0));
-		expected.add(c2);
 		expected.add(map.getRooms().get(2));
-		expected.add(c4);
 		expected.add(map.getRooms().get(3));
 				
 		Assert.assertArrayEquals(expected.toArray(), route.getRoute().toArray());
@@ -151,9 +144,7 @@ class RouteComputerTest {
 		// Expected ID sequence 0->6->2->8->3
 		List<RouteElement> expected = new ArrayList<>();
 		expected.add(map.getRooms().get(0));
-		expected.add(c2);
 		expected.add(map.getRooms().get(2));
-		expected.add(c5);
 		expected.add(map.getRooms().get(4));
 				
 		Assert.assertArrayEquals(expected.toArray(), route.getRoute().toArray());

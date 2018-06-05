@@ -1,108 +1,89 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.io.IOException;
 
-//constructor for ConnectedBy_
-class ConnectedBy_ {
-    public int vertexNum;
-    public ConnectedBy_ next;
-    public ConnectedBy_(int vnum, ConnectedBy_ nbr) {
-            this.vertexNum = vnum; //quadratic derivative of completing squares
-            next = nbr; //ConnectedBy_s
-    }
-}
-
-//constructor for Vertex 
-class Vertex {
-    String room;
-    Double coordinates;
-    ConnectedBy_ adjacentList;
-    Vertex(String room, ConnectedBy_ ConnectedBy_s, Double coordinates) {
-            this.room = room;
-            this.adjacentList = ConnectedBy_s;
-            this.coordinates = coordinates;
-    }
-}
 
 public class Parser {
-	 
-    Vertex[] adjacentLists;  //array of adjacent lists
-     
-    public Parser(String file) throws FileNotFoundException {
-         
-        Scanner sc = new Scanner(new File(file));
-         
-        String ParserType = sc.next();
-        
-        /*Undirected graphs have edges that do not have a direction.
-         * The edges indicate a two-way relationship, in that each edge can be traversed in both directions.
-         * Directed graphs have edges with direction.
-         */
-        
-        boolean undirected=true;
-        if (ParserType.equals("directed")) {
-            undirected=false;
-        }
-         
-        adjacentLists = new Vertex[sc.nextInt()];  //
- 
-        // read vertices
-        for (int v=0; v < adjacentLists.length; v++) {
-            adjacentLists[v] = new Vertex(sc.next(), null, sc.nextDouble());
-        }
- 
-        // read edges
-        while (sc.hasNext()) {
-             
-            // read vertex rooms and translate to vertex numbers
-            int v1 = indexForroom(sc.next());
-            int v2 = indexForroom(sc.next());
-             
-            // add v2 to front of v1's adjacency list and
-            // add v1 to front of v2's adjacency list
-            adjacentLists[v1].adjacentList = new ConnectedBy_(v2, adjacentLists[v1].adjacentList);
-            if (undirected) {
-                adjacentLists[v2].adjacentList = new ConnectedBy_(v1, adjacentLists[v2].adjacentList);
-            }
-        }
+    private String mapFileName_; // File that holds representation of a map
+    private String situationFileName_; // File that holds current occupation of spaces in a building
+    private Scanner mapScanner_;
+    private Scanner situationScanner_;
+    public Parser(String mapFile, String situationFile) throws FileNotFoundException {
+         mapFileName_ = mapFile;
+         situationFileName_ = situationFile;
+         mapScanner_ = new Scanner(new File(mapFileName_));
+         situationScanner_ = new Scanner(new File(situationFileName_));
     }
     
-    /* Compares the room field against the target and if match 
-     * returns current index of array
-     */
-	
-    int indexForroom(String room) {
-        for (int v=0; v < adjacentLists.length; v++) {
-            if (adjacentLists[v].room.equals(room)) {
-                return v;
-            }
-        }
-        return -1;
-    }   
-    
-    /*prints the graph data in the console command line */
-    
-    
-    public void updateFullnesses(Map map) {
-        System.out.println();
-        for (int v=0; v < adjacentLists.length; v++) {
-            System.out.print(adjacentLists[v].room);
-            for (ConnectedBy_ nbr=adjacentLists[v].adjacentList; nbr != null;nbr=nbr.next) {
-                System.out.print(" --> " + adjacentLists[nbr.vertexNum].room);
-            }
-            System.out.println("\n");
-        }
+    public Map getMap() {
+    		Map parsed = new Map(mapFileName_);
+    		loadRouteElements(parsed);
+    		loadConnections(parsed);
+    		updateFullnesses(parsed); // Load initially fullnesses
+    		return parsed;
     }
     
-
-    public Map getMap() throws IOException{
-		Scanner sc = new Scanner(System.in);
-        System.out.print("Enter Parser input file room: "); //allows for different files to be read in
-        String file = sc.nextLine();
-        Parser Parser = new Parser(file);
-        Map Map = new Map(file); // creates a new map 
-		Parser.updateFullnesses(Map);
-		return Map;
-	}
+    private void updateFullnesses(Map map) {
+		// Structure of file with situation (C || R);id;fullness
+    		String line;
+    		while(mapScanner_.hasNextLine()) {
+    			line = mapScanner_.nextLine();
+			String[] parsed = line.split(";");
+			RouteElement element = null;
+			int id = Integer.parseInt(parsed[1]);
+			int fullness = Integer.parseInt(parsed[2]);
+			if (parsed[0].equals("R")) element = map.getRooms().get(id);
+			else if (parsed[0].equals("C")) element = map.getCorridors().get(id);
+			else assert false;
+			element.updateFullness(fullness);
+		}
+    }
+ 
+    
+    private void loadRouteElements(Map map) {
+    		String line;
+    		while(!(line = mapScanner_.nextLine()).equals("Connections")) {
+    			String[] parsed = line.split(";");
+    			if (parsed[0].equals("R")) addRoom(parsed, map);
+    			else if (parsed[0].equals("C")) addCorridor(parsed, map);
+    			else assert false;
+    		}
+    }
+    
+    private void loadConnections(Map map) {
+    	// Connection line structure L;roomID;corridorID
+    	String line;
+	while(mapScanner_.hasNextLine()) {
+			line = mapScanner_.nextLine();
+			String[] parsed = line.split(";");
+			if (parsed[0].equals("L")) addConnection(map,Integer.parseInt(parsed[1]),(Integer.parseInt(parsed[2])));
+			else assert false;
+		}
+    }
+    
+    private void addConnection(Map map, int roomID, int corridorID) {
+    		map.addCorridorToRoom(map.getRooms().get(roomID), map.getCorridors().get(corridorID));
+    }
+    
+    private void addRoom(String[] parsed, Map map) {
+    		// Structure of line representing a room R;ID;name;capacity;hasExit;X;Y
+    		int ID = Integer.parseInt(parsed[1]);
+    		String name = parsed[2];
+    		int capacity = Integer.parseInt(parsed[3]);
+    		boolean hasExit = (parsed[4].equals("Y")) ? true : false;
+    		int fullness = 0; // Initially empty
+    		Coordinates coord = new Coordinates(Integer.parseInt(parsed[5]),Integer.parseInt(parsed[6]));
+    		map.addRoom(new Room(name,coord,ID,capacity,fullness,hasExit));
+    }
+    
+    private void addCorridor(String[] parsed, Map map) {
+    		// Structure of line representing a corridor C;ID;length;capacity;hasExit
+    		int ID = Integer.parseInt(parsed[1]);
+    		int fullness = 0;
+    		int length = Integer.parseInt(parsed[2]);
+		int capacity = Integer.parseInt(parsed[3]);
+		boolean hasExit = (parsed[4].equals("Y")) ? true : false;
+		map.addCorridor(new Corridor(length,ID,capacity,fullness,hasExit));
+    }
+    
 }

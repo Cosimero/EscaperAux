@@ -4,6 +4,7 @@ import java.util.List;
 public class Map {
 	private String name_;
 	private Hashtable<Integer,Room> rooms_ = new Hashtable<>();
+	private Hashtable<Integer,Corridor> corridors_ = new Hashtable<>();
 	
 	public Map(String name) {
 		name_ = name;
@@ -11,6 +12,10 @@ public class Map {
 
 	public Hashtable<Integer,Room> getRooms() {
 		return rooms_;
+	}
+	
+	public Hashtable<Integer,Corridor> getCorridors() {
+		return corridors_;
 	}
 
 	public void setRooms(Hashtable<Integer,Room> rooms_) {
@@ -27,6 +32,12 @@ public class Map {
 	public void addRoom(Room r) {
 		if (rooms_.contains(r) || rooms_.containsKey(r.getID())) return;
 		rooms_.put(r.getID(), r);
+		return;
+	}
+	
+	public void addCorridor(Corridor c) {
+		if (corridors_.contains(c) || corridors_.containsKey(c.getID())) return;
+		corridors_.put(c.getID(), c);
 		return;
 	}
 	

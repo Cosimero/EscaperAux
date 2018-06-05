@@ -34,6 +34,10 @@ public class RouteElement implements Comparable<RouteElement> {
 	public void updateFullness(int state) {
 		fullness_ = state;
 	}
+	
+	public void increaseFullness() {
+		fullness_++;
+	}
 
 	@Override
 	public int compareTo(RouteElement o) {

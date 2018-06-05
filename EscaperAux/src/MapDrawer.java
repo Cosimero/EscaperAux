@@ -88,7 +88,7 @@ public class MapDrawer {
 		graphComponent.getViewport().setOpaque(true);
 		graphComponent.setBackgroundImage(new ImageIcon("resources/plan.png"));
 		
-		//Mouse listener
+		// Mouse listener
 		graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
 		{
 			public void mouseReleased(MouseEvent e)
