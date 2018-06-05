@@ -156,14 +156,7 @@ public class MapDrawer {
 		String[] parsed = labelText.split(";");
 		return Integer.parseInt(parsed[1]);
 	}
-	
-
-//	
-//	int getIDOfUsersLocation() {
-//		
-//		return -1;
-//	}
-	
+		
 	
 	
 	//---------TESTING--------------------------
@@ -196,14 +189,6 @@ public class MapDrawer {
 		MapDrawer drawer = new MapDrawer(testMap);
 		drawer.drawMap();
 		
-
-//		System.out.println("repaint");
-//		frame.getContentPane().remove(0);
-//		frame.getContentPane().add(graphComponent2);
-//		frame.setVisible(true);
-//		frame.revalidate();
-//		frame.repaint();
-	
 	}
 	
 	//---------TESTING----------
