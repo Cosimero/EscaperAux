@@ -3,6 +3,8 @@ import java.util.Hashtable;
 import java.util.List;
 public class Map {
 	private String name_;
+	// All route elements in the map divided by its type
+	// id of a route element must be unique accross all of elements 
 	private Hashtable<Integer,Room> rooms_ = new Hashtable<>();
 	private Hashtable<Integer,Corridor> corridors_ = new Hashtable<>();
 	
